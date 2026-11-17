@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101014">
+<title>Sensi Pro FF</title>
+<style>
+:root{color-scheme:dark;--red:#ff3038;--bg:#101014;--panel:#1b1b22;--muted:#aaaab5}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#321014 0,#101014 42%);color:#fff;font:16px system-ui,-apple-system,sans-serif}
+main{max-width:620px;margin:auto;padding:22px 16px 40px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.logo{font-weight:900;letter-spacing:1px;font-size:20px}.logo span{color:var(--red)}
+.tag{font-size:11px;color:#ff8589;border:1px solid #713036;padding:5px 9px;border-radius:20px}
+h1{font-size:34px;line-height:1.05;margin:12px 0 8px}h1 span{color:var(--red)}
+.sub{color:var(--muted);margin:0 0 22px}
+.panel{background:linear-gradient(145deg,#22222a,#17171d);border:1px solid #34343d;border-radius:18px;padding:18px;margin:14px 0;box-shadow:0 12px 35px #0005}
+label{display:block;color:#d6d6dc;font-size:13px;margin:14px 0 7px}
+select,input{width:100%;background:#111116;border:1px solid #42424c;color:white;padding:12px;border-radius:11px;font:inherit}
+.rangehead{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin-top:17px}
+.value{color:#ff555c;font-weight:800;font-size:18px}
+input[type=range]{padding:0;accent-color:var(--red);margin-top:8px}
+button{border:0;border-radius:12px;background:var(--red);color:white;padding:13px 16px;font-weight:800;font-size:15px;width:100%;margin-top:14px;cursor:pointer}
+button.secondary{background:#303039;border:1px solid #4a4a55}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tile{background:#26262f;border-radius:13px;padding:13px}.tile b{display:block;margin-top:5px}.small{font-size:12px;color:var(--muted)}
+.note{font-size:12px;color:#b9b9c2;line-height:1.5}
+footer{text-align:center;color:#777783;font-size:11px;margin-top:24px}
+</style>
+</head>
+<body>
+<main>
+<header><div class="logo">SENSI <span>PRO FF</span></div><div class="tag">PROTÓTIPO V1</div></header>
+<h1>Sua mira.<br><span>Seu estilo.</span></h1>
+<p class="sub">Monte e salve sua configuração de sensibilidade.</p>
+<section class="panel">
+  <div class="grid">
+    <div class="tile">🎯<b>Gerador de sensi</b><span class="small">Ajuste manual</span></div>
+    <div class="tile">📱<b>Por aparelho</b><span class="small">Perfil personalizado</span></div>
+  </div>
+  <label for="device">Modelo do celular</label>
+  <select id="device"><option>iPhone XR</option><option>iPhone 11</option><option>iPhone 12</option><option>iPhone 13</option><option>Samsung</option><option>Xiaomi</option><option>Motorola</option><option>Outro Android</option></select>
+  <label for="style">Estilo de jogo</label>
+  <select id="style"><option>Capa / puxada rápida</option><option>Precisão</option><option>Equilibrada</option><option>XM8 e doze</option></select>
+  <div id="ranges"></div>
+  <button id="copy">Copiar minha sensibilidade</button>
+  <button class="secondary" id="reset">Restaurar valores iniciais</button>
+  <p class="note">Os valores são sugestões ajustáveis, não garantem capa nem alteram diretamente o jogo. O app não aumenta fisicamente os Hz da tela nem modifica o Free Fire.</p>
+</section>
+<section class="panel">
+  <b>⚡ Dica de desempenho</b>
+  <p class="note">Feche aplicativos em segundo plano, mantenha espaço livre no aparelho e use a opção de FPS mais alta que o próprio jogo disponibilizar, se o celular suportar.</p>
+</section>
+<footer>SENSI PRO FF • Ferramenta independente, não oficial da Garena.</footer>
+</main>
+<script>
+const names=['Geral','Ponto vermelho','Mira 2x','Mira 4x','Mira AWM','Olhadinha'];
+const initial=[180,175,170,165,90,150];let values=[...initial];
+const ranges=document.getElementById('ranges');
+function draw(){ranges.innerHTML='';names.forEach((name,i)=>{let wrap=document.createElement('div');wrap.innerHTML=`<div class="rangehead"><label for="r${i}">${name}</label><span class="value" id="v${i}">${values[i]}</span></div><input id="r${i}" type="range" min="0" max="200" value="${values[i]}">`;ranges.appendChild(wrap);wrap.querySelector('input').addEventListener('input',e=>{values[i]=+e.target.value;document.getElementById('v'+i).textContent=values[i]})})}
+draw();
+document.getElementById('copy').onclick=async()=>{let text='SENSI PRO FF\\nCelular: '+document.getElementById('device').value+'\\nEstilo: '+document.getElementById('style').value+'\\n'+names.map((n,i)=>n+': '+values[i]).join('\\n');try{await navigator.clipboard.writeText(text);alert('Sensibilidade copiada!')}catch(e){prompt('Copie sua sensibilidade:',text)}};
+document.getElementById('reset').onclick=()=>{values=[...initial];draw()};
+</script>
+</body></html>
